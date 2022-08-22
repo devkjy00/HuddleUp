@@ -1,10 +1,10 @@
 package jy.dev.huddleup.security.jwt;
 
 
+import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.nimbusds.jose.Algorithm;
-import com.nimbusds.jwt.JWT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

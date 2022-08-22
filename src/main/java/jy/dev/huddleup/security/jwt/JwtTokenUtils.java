@@ -2,6 +2,7 @@ package jy.dev.huddleup.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import jy.dev.huddleup.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;

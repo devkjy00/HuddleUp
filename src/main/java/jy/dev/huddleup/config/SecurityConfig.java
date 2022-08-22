@@ -3,10 +3,12 @@ package jy.dev.huddleup.config;
 import jy.dev.huddleup.security.CustomAuthenticationFailureHandler;
 import jy.dev.huddleup.security.CustomAuthenticationSuccessHandler;
 import jy.dev.huddleup.security.CustomOAuth2UserService;
+import jy.dev.huddleup.security.jwt.FilterSkipMatcher;
+import jy.dev.huddleup.security.jwt.HeaderTokenExtractor;
+import jy.dev.huddleup.security.jwt.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,7 +19,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -26,15 +30,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomOAuth2UserService customOAuth2UserService;
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private HeaderTokenExtractor headerTokenExtractor;
 
     @Autowired
     public SecurityConfig(CustomOAuth2UserService customOAuth2UserService
             , CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler
-            , CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
+            , CustomAuthenticationFailureHandler customAuthenticationFailureHandler
+            , HeaderTokenExtractor headerTokenExtractor) {
 
         this.customOAuth2UserService = customOAuth2UserService;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+        this.headerTokenExtractor = headerTokenExtractor;
     }
 
     @Override
@@ -56,15 +63,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .oauth2Login()
-//                .defaultSuccessUrl("/oauth2_success")
+                .defaultSuccessUrl("/api/main")
                 .successHandler(customAuthenticationSuccessHandler)
-//                .failureHandler(customAuthenticationFailureHandler)
+                .failureHandler(customAuthenticationFailureHandler)
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService);
 
 
-//        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
+        http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -79,6 +85,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
+
+    private JwtAuthFilter jwtFilter() throws Exception {
+        List<String> skipPathList = new ArrayList<>();
+
+        // 회원 관리 API 허용
+        skipPathList.add("POST,/api/signup");
+        skipPathList.add("POST,/api/login");
+
+        skipPathList.add("GET,/api/main");
+        skipPathList.add("POST,/test");
+
+        FilterSkipMatcher matcher = new FilterSkipMatcher(
+                skipPathList,
+                "/**"
+        );
+
+        JwtAuthFilter filter = new JwtAuthFilter(
+                matcher,
+                headerTokenExtractor
+        );
+        filter.setAuthenticationManager(super.authenticationManagerBean());
+
+        return filter;
+    }
 }
 
 
