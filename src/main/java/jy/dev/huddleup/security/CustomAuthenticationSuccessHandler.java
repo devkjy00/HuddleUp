@@ -14,16 +14,36 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    public static final String AUTH_HEADER = "Authorization";
-    public static final String TOKEN_TYPE = "BEARER";
+
+	@Value("${spring.frontend.url}")
+    private String FRONTEND_URL;
+
+	private JwtTokenUtils jwtTokenUtils;
+
+	@Autowired
+	CustomAuthenticationSuccessHandler(JwtTokenUtils jwtTokenUtils){
+		this.jwtTokenUtils = jwtTokenUtils;
+	}
+
 
     @Override
-    public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
-                                        final Authentication authentication) {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+        Authentication authentication) throws IOException, ServletException {
 
-        final UserDetailsImpl userDetails = ((UserDetailsImpl) authentication.getPrincipal());
+        String jwt = jwtTokenUtils.generateJwtToken((CustomOAuth2User) authentication.getPrincipal());
 
-        final String token = JwtTokenUtils.generateJwtToken(userDetails);
-        response.addHeader(AUTH_HEADER, TOKEN_TYPE + " " + token);
+        String url = makeRedirectUrl(jwt);
+
+        jwtProvider.setJwtToHeader(jwt, response);
+
+        getRedirectStrategy().sendRedirect(request, response, url);
+    }
+
+    private String makeRedirectUrl(String jwt) {
+
+        return UriComponentsBuilder
+                .fromUriString(FRONTEND_URL + "/login/callback?" + "jwt=" + jwt)
+                .build()
+                .toUriString();
     }
 }
