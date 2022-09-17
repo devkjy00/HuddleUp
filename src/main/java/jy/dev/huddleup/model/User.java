@@ -1,14 +1,11 @@
 package jy.dev.huddleup.model;
 
 import jy.dev.huddleup.security.CustomOAuth2User;
-import jy.dev.huddleup.util.Role;
+import jy.dev.huddleup.util.UserRole;
 import jy.dev.huddleup.util.Social;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import javax.persistence.*;
 
@@ -46,7 +43,7 @@ public class User {
     @NonNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole userRole;
 
 //    @BatchSize(size = 100)
 //    @OneToOne(mappedBy = "user")

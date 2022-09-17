@@ -1,7 +1,7 @@
 package jy.dev.huddleup.security;
 
 import jy.dev.huddleup.model.User;
-import jy.dev.huddleup.util.Role;
+import jy.dev.huddleup.util.UserRole;
 import jy.dev.huddleup.util.Social;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +30,7 @@ public class CustomOAuth2User implements OAuth2User {
                .email(email)
                .social(social)
                .socialProviderKey(socialProviderKey)
-               .role(Role.USER).build();
+               .userRole(UserRole.USER).build();
     }
 
     @Override

@@ -1,5 +1,5 @@
 package jy.dev.huddleup.util;
 
-public enum Role {
+public enum UserRole {
     USER, ADMIN;
 }
