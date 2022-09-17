@@ -2,11 +2,13 @@ package jy.dev.huddleup.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import jy.dev.huddleup.security.UserDetailsImpl;
+import jy.dev.huddleup.security.CustomOAuth2User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public final class JwtTokenUtils {
 
     private static final int SEC = 1;
@@ -27,14 +29,14 @@ public final class JwtTokenUtils {
     @Value("${data.jwt.key}")
     public static String JWT_SECRET;
 
-    public static String generateJwtToken(UserDetailsImpl userDetails) {
+    public static String generateJwtToken(CustomOAuth2User userInfo) {
         String token = null;
         try {
             token = JWT.create()
                     .withIssuer("huddleUp")
-                    .withClaim(CLAIM_USER_EMAIL, userDetails.getUsername())
-                    .withClaim(CLAIM_USER_ID, userDetails.getId())
-                    .withClaim(CLAIM_USER_NICK, userDetails.getUsername())
+                    .withClaim(CLAIM_USER_EMAIL, userInfo.getName())
+                    .withClaim(CLAIM_USER_ID, userInfo.getId())
+                    .withClaim(CLAIM_USER_NICK, userInfo.getName())
                     // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간)
                     .withClaim(CLAIM_EXPIRED_DATE, new Date(System.currentTimeMillis() + JWT_TOKEN_VALID_MILLI_SEC))
                     .sign(generateAlgorithm());

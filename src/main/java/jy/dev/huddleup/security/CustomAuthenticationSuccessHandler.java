@@ -2,9 +2,12 @@ package jy.dev.huddleup.security;
 
 import jy.dev.huddleup.security.jwt.JwtTokenUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,9 +37,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         String url = makeRedirectUrl(jwt);
 
-        jwtProvider.setJwtToHeader(jwt, response);
-
-        getRedirectStrategy().sendRedirect(request, response, url);
+//        jwtProvider.setJwtToHeader(jwt, response);
+//
+//        getRedirectStrategy().sendRedirect(request, response, url);
     }
 
     private String makeRedirectUrl(String jwt) {

@@ -1,12 +1,13 @@
 package jy.dev.huddleup.security.jwt;
 
 import jy.dev.huddleup.repository.UserRepository;
-import jy.dev.huddleup.security.UserDetailsImpl;
+import jy.dev.huddleup.security.CustomOAuth2User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -29,8 +30,10 @@ public class JwtAuthProvider implements AuthenticationProvider {
         String token = (String) authentication.getPrincipal();
         Map<String, String> jwtData = jwtDecoder.decode(token);
 
-        UserDetailsImpl userDetails = new UserDetailsImpl(jwtData);
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//        CustomOAuth2User oAuth2User = new CustomOAuth2User(jwtData);
+//        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(null, null, null);
+
     }
 
     @Override

@@ -33,7 +33,6 @@ public class CustomOAuth2User implements OAuth2User {
                .role(Role.USER).build();
     }
 
-
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;
