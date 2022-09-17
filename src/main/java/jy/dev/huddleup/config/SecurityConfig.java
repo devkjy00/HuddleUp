@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(customOAuth2UserService);
 
 
-//        http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -92,6 +92,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 회원 관리 API 허용
         skipPathList.add("POST,/api/signup");
         skipPathList.add("POST,/api/login");
+
+        skipPathList.add("POST,/login");
+        skipPathList.add("GET,/login");
 
         skipPathList.add("GET,/api/main");
         skipPathList.add("POST,/test");
