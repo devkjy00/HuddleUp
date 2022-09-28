@@ -9,7 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
+import static jy.dev.huddleup.security.jwt.JwtTokenUtils.*;
 @Getter
 public class UserDetailsImpl implements UserDetails {
 
@@ -19,6 +21,11 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(User user){
         this.username =  user.getUsername();
         this.userId = user.getId();
+    }
+
+    public UserDetailsImpl(Map<String, String> decodedJwt){
+        this.username =  decodedJwt.get(CLAIM_USER_EMAIL);
+        this.userId = Long.valueOf(decodedJwt.get(CLAIM_USER_ID));
     }
 
     @Override

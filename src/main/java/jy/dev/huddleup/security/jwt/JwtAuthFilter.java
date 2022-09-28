@@ -32,7 +32,6 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
         this.mapper = new ObjectMapper();
     }
 
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String tokenPayload = request.getHeader("Authorization");
@@ -80,7 +79,6 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
                 response
         );
     }
-
 
     @Override
     protected void unsuccessfulAuthentication(
