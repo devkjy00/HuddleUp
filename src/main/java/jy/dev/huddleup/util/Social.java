@@ -1,8 +1,8 @@
 package jy.dev.huddleup.util;
 
-import jy.dev.huddleup.security.GoogleOAuth2User;
-import jy.dev.huddleup.security.KakaoOAuth2User;
-import jy.dev.huddleup.security.CustomOAuth2User;
+import jy.dev.huddleup.security.oauth2.GoogleOAuth2User;
+import jy.dev.huddleup.security.oauth2.KakaoOAuth2User;
+import jy.dev.huddleup.security.oauth2.CustomOAuth2User;
 import lombok.Getter;
 
 import java.util.Map;

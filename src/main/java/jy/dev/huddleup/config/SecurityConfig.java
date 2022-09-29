@@ -1,8 +1,8 @@
 package jy.dev.huddleup.config;
 
-import jy.dev.huddleup.security.CustomAuthenticationFailureHandler;
-import jy.dev.huddleup.security.CustomAuthenticationSuccessHandler;
-import jy.dev.huddleup.security.CustomOAuth2UserService;
+import jy.dev.huddleup.security.oauth2.CustomAuthenticationFailureHandler;
+import jy.dev.huddleup.security.oauth2.CustomAuthenticationSuccessHandler;
+import jy.dev.huddleup.security.oauth2.CustomOAuth2UserService;
 import jy.dev.huddleup.security.jwt.FilterSkipMatcher;
 import jy.dev.huddleup.security.jwt.HeaderTokenExtractor;
 import jy.dev.huddleup.security.jwt.JwtAuthFilter;

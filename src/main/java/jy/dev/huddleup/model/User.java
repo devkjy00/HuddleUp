@@ -1,6 +1,6 @@
 package jy.dev.huddleup.model;
 
-import jy.dev.huddleup.security.CustomOAuth2User;
+import jy.dev.huddleup.security.oauth2.CustomOAuth2User;
 import jy.dev.huddleup.util.UserRole;
 import jy.dev.huddleup.util.Social;
 import lombok.*;

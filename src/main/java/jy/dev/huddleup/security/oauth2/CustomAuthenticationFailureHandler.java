@@ -1,4 +1,4 @@
-package jy.dev.huddleup.security;
+package jy.dev.huddleup.security.oauth2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jy.dev.huddleup.exception.HttpResponse;

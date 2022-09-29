@@ -1,4 +1,4 @@
-package jy.dev.huddleup.security;
+package jy.dev.huddleup.security.oauth2;
 
 import jy.dev.huddleup.model.User;
 import jy.dev.huddleup.repository.UserRepository;

@@ -1,6 +1,7 @@
-package jy.dev.huddleup.security;
+package jy.dev.huddleup.security.oauth2;
 
 import jy.dev.huddleup.security.jwt.JwtTokenUtils;
+import jy.dev.huddleup.security.oauth2.CustomOAuth2User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
