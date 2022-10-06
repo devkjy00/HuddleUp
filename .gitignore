@@ -36,7 +36,12 @@ out/
 ### VS Code ###
 .vscode/
 
+
 application-oauth.yml
 application-data.yml
 .gitsecret/keys/random_seed
 !*.secret
+
+*.log
+*.gz
+*.swp

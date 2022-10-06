@@ -31,15 +31,15 @@ public class RecruitPostParamDto {
     private Integer sort = 0;
 
     @NotBlank(message = RecruitPostDtoMsg.EMPTY_PARAMETER)
-    private String tag = ALL;
+    private Integer tagId = 0;
 
     @Builder
-    public RecruitPostParamDto(Integer limit, Integer offSet, Integer sort, String tag){
+    public RecruitPostParamDto(Integer limit, Integer offSet, Integer sort, Integer tagId){
         this.limit = Objects.nonNull(limit)? limit : this.limit;
         this.offSet = Objects.nonNull(offSet)?
                 (offSet) * this.limit : this.offSet;
         this.sort = Objects.nonNull(sort)? sort : this.sort;
-        this.tag = Objects.nonNull(tag)? tag : this.tag;
+        this.tagId = Objects.nonNull(tagId)? tagId : this.tagId;
     }
 
     public static void validate(@Valid RecruitPostParamDto requestDto){
