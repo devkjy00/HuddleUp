@@ -35,6 +35,23 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
+    - name: Configure GPG Key
+      uses: crazy-max/ghaction-import-gpg@v3
+      with:
+        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+        passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        git-user-signingkey: true
+        git-commit-gpgsign: true
+
+    - name: Reveal secrets
+      env:
+        SECRET_PWD: ${{ secrets.GPG_PASSPHRASE }}
+      run: |
+        sudo apt install git-secret                     
+#        git secret tell anwjsrlrhwkd@naver.com
+#        git secret reveal -p $(echo $SECRET_PWD | sed 's/./& /g')
+
+      
 
     - name: Grant execute permission for gradlew
       run: chmod +x ./gradlew
