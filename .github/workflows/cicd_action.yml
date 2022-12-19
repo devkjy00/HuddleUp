@@ -15,7 +15,7 @@ on:
 
 env:
   PROJECT_NAME: HuddleUp
-  BUCKET_NAME: southoftheriver-cicd
+  BUCKET_NAME: ec2-cicd
   CODE_DEPLOY_APP_NAME: spring-deploy
   DEPLOYMENT_GROUP_NAME: spring-deploy-group
 
@@ -47,9 +47,8 @@ jobs:
       env:
         SECRET_PWD: ${{ secrets.GPG_PASSPHRASE }}
       run: |
-        sudo apt install git-secret                     
-#        git secret tell anwjsrlrhwkd@naver.com
-#        git secret reveal -p $(echo $SECRET_PWD | sed 's/./& /g')
+        sudo apt install git-secret
+        git secret reveal -p $(echo $SECRET_PWD | sed 's/./& /g')
 
       
 
