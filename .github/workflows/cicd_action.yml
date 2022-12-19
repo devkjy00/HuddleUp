@@ -16,8 +16,8 @@ on:
 env:
   PROJECT_NAME: HuddleUp
   BUCKET_NAME: southoftheriver-cicd
-  CODE_DEPLOY_APP_NAME: ec2-deploy
-  DEPLOYMENT_GROUP_NAME: spring-deploy
+  CODE_DEPLOY_APP_NAME: spring-deploy
+  DEPLOYMENT_GROUP_NAME: spring-deploy-group
 
 permissions:
   contents: read
