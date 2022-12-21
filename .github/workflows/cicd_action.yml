@@ -48,7 +48,7 @@ jobs:
         SECRET_PWD: ${{ secrets.GPG_PASSPHRASE }}
       run: |
         sudo apt install git-secret
-        git secret reveal -p $(echo $SECRET_PWD | sed 's/./& /g')
+        git secret reveal -p $SECRET_PWD
 
       
 
