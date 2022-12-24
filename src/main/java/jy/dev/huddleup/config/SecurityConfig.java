@@ -1,5 +1,6 @@
 package jy.dev.huddleup.config;
 
+import jy.dev.huddleup.security.jwt.JwtAuthProvider;
 import jy.dev.huddleup.security.oauth2.CustomAuthenticationFailureHandler;
 import jy.dev.huddleup.security.oauth2.CustomAuthenticationSuccessHandler;
 import jy.dev.huddleup.security.oauth2.CustomOAuth2UserService;
@@ -9,6 +10,7 @@ import jy.dev.huddleup.security.jwt.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,17 +33,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     private HeaderTokenExtractor headerTokenExtractor;
+    private JwtAuthProvider jwtAuthProvider;
 
     @Autowired
     public SecurityConfig(CustomOAuth2UserService customOAuth2UserService
             , CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler
             , CustomAuthenticationFailureHandler customAuthenticationFailureHandler
-            , HeaderTokenExtractor headerTokenExtractor) {
+            , HeaderTokenExtractor headerTokenExtractor
+            , JwtAuthProvider jwtAuthProvider) {
 
         this.customOAuth2UserService = customOAuth2UserService;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
         this.headerTokenExtractor = headerTokenExtractor;
+        this.jwtAuthProvider = jwtAuthProvider;
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(jwtAuthProvider);
     }
 
     @Override
@@ -55,12 +65,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception{
         http
-                .httpBasic().disable()
                 .csrf().disable()
                 .cors().configurationSource(corsConfigurationSource())
             .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http
+            .authorizeRequests()
+            .anyRequest()
+            .permitAll()
             .and()
                 .oauth2Login()
                 .defaultSuccessUrl("/api/main")
@@ -70,7 +86,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(customOAuth2UserService);
 
 
-        http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
