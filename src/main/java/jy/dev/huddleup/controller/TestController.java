@@ -13,4 +13,10 @@ public class TestController {
         log.info("logging test");
         return "test";
     }
+
+    @GetMapping("/")
+    String dummy(){
+        log.info("logging test");
+        return "test";
+    }
 }
