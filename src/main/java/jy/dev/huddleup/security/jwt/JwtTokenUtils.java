@@ -28,7 +28,6 @@ public final class JwtTokenUtils {
     public static final String CLAIM_USER_ID= "USER_ID";
     public static final String CLAIM_USER_EMAIL = "USER_EMAIL";
 
-    @Value("${data.jwt.key}")
     public static String JWT_SECRET;
 
     public static String generateJwtToken(CustomOAuth2User userInfo) {
@@ -36,7 +35,7 @@ public final class JwtTokenUtils {
         try {
             token = JWT.create()
                     .withIssuer("huddleUp")
-                    .withClaim(CLAIM_USER_EMAIL, userInfo.getName())
+    //                .withClaim(CLAIM_USER_EMAIL, userInfo.getName())
                     .withClaim(CLAIM_USER_ID, userInfo.getId())
                     .withClaim(CLAIM_USER_NICK, userInfo.getName())
                     // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간)
@@ -52,5 +51,10 @@ public final class JwtTokenUtils {
 
     private static Algorithm generateAlgorithm() {
         return Algorithm.HMAC256(JWT_SECRET);
+    }
+
+    @Value("${spring.jwt.key}")
+    public void setName(String key) {
+        this.JWT_SECRET = key;
     }
 }

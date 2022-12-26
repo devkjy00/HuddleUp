@@ -19,10 +19,6 @@ public class KakaoOAuth2User extends CustomOAuth2User {
         try {
             super.attributes = (Map<String, Object>) providedAttributes.get(ATTRIBUTES);
 
-            providedAttributes.forEach((key, value) -> log.info(key + " : " + value));
-
-//            ((Map<?,?>) providedAttributes.get(ATTRIBUTES)).forEach((key, value) -> log.info(key + " : " + value));
-
 //            if (!providedAttributes.containsKey(ATTRIBUTES_KEY) ||
 //                    !attributes.keySet().containsAll(List.of(ATTRIBUTES_NAME, ATTRIBUTES_EMAIL))) {
 //                throw new InvalidOAuth2AttributesException();

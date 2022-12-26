@@ -44,3 +44,4 @@ application-data.yml
 
 *.log
 *.gz
+*.swp

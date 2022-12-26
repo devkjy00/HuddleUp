@@ -32,11 +32,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String url = makeRedirectUrl(jwt);
 
-//        setJwtToHeader(jwt, response);
-
         getRedirectStrategy().sendRedirect(request, response, url);
-
-        log.info(url);
 
     }
 
@@ -47,9 +43,4 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .build()
                 .toUriString();
     }
-
-//    public void setJwtToHeader(String jwt, HttpServletResponse response) {
-//        response.addHeader("Authorization", jwt);
-//        response.addHeader("Token-type", "Bearer");
-//    }
 }
