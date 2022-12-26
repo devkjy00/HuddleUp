@@ -3,11 +3,13 @@ package jy.dev.huddleup.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import jy.dev.huddleup.security.oauth2.CustomOAuth2User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Slf4j
 @Component
 public final class JwtTokenUtils {
 
@@ -40,6 +42,8 @@ public final class JwtTokenUtils {
                     // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간)
                     .withClaim(CLAIM_EXPIRED_DATE, new Date(System.currentTimeMillis() + JWT_TOKEN_VALID_MILLI_SEC))
                     .sign(generateAlgorithm());
+
+            log.info(token);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
