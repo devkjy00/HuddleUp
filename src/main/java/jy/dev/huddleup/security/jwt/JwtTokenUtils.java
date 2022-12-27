@@ -3,11 +3,13 @@ package jy.dev.huddleup.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import jy.dev.huddleup.security.oauth2.CustomOAuth2User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Slf4j
 @Component
 public final class JwtTokenUtils {
 
@@ -26,7 +28,6 @@ public final class JwtTokenUtils {
     public static final String CLAIM_USER_ID= "USER_ID";
     public static final String CLAIM_USER_EMAIL = "USER_EMAIL";
 
-    @Value("${data.jwt.key}")
     public static String JWT_SECRET;
 
     public static String generateJwtToken(CustomOAuth2User userInfo) {
@@ -34,12 +35,14 @@ public final class JwtTokenUtils {
         try {
             token = JWT.create()
                     .withIssuer("huddleUp")
-                    .withClaim(CLAIM_USER_EMAIL, userInfo.getName())
+    //                .withClaim(CLAIM_USER_EMAIL, userInfo.getName())
                     .withClaim(CLAIM_USER_ID, userInfo.getId())
                     .withClaim(CLAIM_USER_NICK, userInfo.getName())
                     // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간)
                     .withClaim(CLAIM_EXPIRED_DATE, new Date(System.currentTimeMillis() + JWT_TOKEN_VALID_MILLI_SEC))
                     .sign(generateAlgorithm());
+
+            log.info(token);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -48,5 +51,10 @@ public final class JwtTokenUtils {
 
     private static Algorithm generateAlgorithm() {
         return Algorithm.HMAC256(JWT_SECRET);
+    }
+
+    @Value("${spring.jwt.key}")
+    public void setName(String key) {
+        this.JWT_SECRET = key;
     }
 }

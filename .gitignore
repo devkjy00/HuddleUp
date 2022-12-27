@@ -43,3 +43,5 @@ application-data.yml
 !*.secret
 
 *.log
+*.gz
+*.swp

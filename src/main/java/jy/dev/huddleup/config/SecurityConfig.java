@@ -74,10 +74,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http
-            .authorizeRequests()
-            .anyRequest()
-            .permitAll()
-            .and()
                 .oauth2Login()
                 .defaultSuccessUrl("/api/main")
                 .successHandler(customAuthenticationSuccessHandler)
