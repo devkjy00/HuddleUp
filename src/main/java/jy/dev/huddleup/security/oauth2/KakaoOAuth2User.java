@@ -1,5 +1,6 @@
 package jy.dev.huddleup.security.oauth2;
 
+import java.util.List;
 import jy.dev.huddleup.util.Social;
 
 import java.util.Map;
@@ -19,10 +20,11 @@ public class KakaoOAuth2User extends CustomOAuth2User {
         try {
             super.attributes = (Map<String, Object>) providedAttributes.get(ATTRIBUTES);
 
-//            if (!providedAttributes.containsKey(ATTRIBUTES_KEY) ||
-//                    !attributes.keySet().containsAll(List.of(ATTRIBUTES_NAME, ATTRIBUTES_EMAIL))) {
+            if (!providedAttributes.containsKey(ATTRIBUTES_KEY) ||
+                    !attributes.keySet().containsAll(List.of(ATTRIBUTES_PROFILE, ATTRIBUTES_EMAIL))) {
 //                throw new InvalidOAuth2AttributesException();
-//            }
+                throw new IllegalArgumentException();
+            }
 
             super.name = String.valueOf(((Map<?,?>) attributes.get(ATTRIBUTES_PROFILE)).get(ATTRIBUTES_NAME));
             super.email = String.valueOf(attributes.get(ATTRIBUTES_EMAIL));
