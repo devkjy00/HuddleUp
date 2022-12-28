@@ -26,8 +26,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
-		log.info("social login fail");
-
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
 
