@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import jy.dev.huddleup.model.Profile;
 import jy.dev.huddleup.model.User;
 import jy.dev.huddleup.util.Social;
 import jy.dev.huddleup.util.UserRole;
@@ -30,7 +29,6 @@ public class CustomOAuth2User implements OAuth2User {
             .email(email)
             .social(social)
             .socialProviderKey(socialProviderKey)
-            .profile(new Profile())
             .userRole(UserRole.USER).build();
     }
 

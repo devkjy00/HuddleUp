@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,8 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @DynamicInsert
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor()
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Profile {
 
     @Id
@@ -59,4 +59,9 @@ public class Profile {
 
     @Column()
     private String residence;
+
+    public Profile(Long id) {
+        this.id = id;
+    }
+
 }

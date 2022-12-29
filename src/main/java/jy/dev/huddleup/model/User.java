@@ -61,6 +61,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
+
     @BatchSize(size = 100)
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profile profile;
@@ -72,6 +73,9 @@ public class User {
         return this;
     }
 
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
 
     public User(Long id) {
         this.id = id;
