@@ -19,7 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Entity
 @Builder
-@Table(name = "_user")
+@Table(name = "profile")
 @DynamicUpdate
 @DynamicInsert
 @AllArgsConstructor
