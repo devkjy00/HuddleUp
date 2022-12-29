@@ -1,16 +1,16 @@
 package jy.dev.huddleup.security.oauth2;
 
-import jy.dev.huddleup.model.User;
-import jy.dev.huddleup.util.UserRole;
-import jy.dev.huddleup.util.Social;
-import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import jy.dev.huddleup.model.Profile;
+import jy.dev.huddleup.model.User;
+import jy.dev.huddleup.util.Social;
+import jy.dev.huddleup.util.UserRole;
+import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Getter
 public class CustomOAuth2User implements OAuth2User {
@@ -24,13 +24,14 @@ public class CustomOAuth2User implements OAuth2User {
     protected Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
     protected Map<String, Object> attributes = new HashMap<>();
 
-    public User toUser(){
-       return User.builder()
-               .username(name)
-               .email(email)
-               .social(social)
-               .socialProviderKey(socialProviderKey)
-               .userRole(UserRole.USER).build();
+    public User toUser() {
+        return User.builder()
+            .username(name)
+            .email(email)
+            .social(social)
+            .socialProviderKey(socialProviderKey)
+            .profile(new Profile())
+            .userRole(UserRole.USER).build();
     }
 
     @Override
