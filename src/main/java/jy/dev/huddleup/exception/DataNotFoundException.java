@@ -1,8 +1,14 @@
 package jy.dev.huddleup.exception;
 
-public class DataNotFoundException extends RuntimeException{
+public class DataNotFoundException extends RuntimeException {
 
-    public DataNotFoundException(String message){
-        super(message);
+    private final HttpResponse httpResponse;
+
+    public DataNotFoundException(HttpResponse httpResponse) {
+        this.httpResponse = httpResponse;
+    }
+
+    public HttpResponse getHttpResponse() {
+        return httpResponse;
     }
 }

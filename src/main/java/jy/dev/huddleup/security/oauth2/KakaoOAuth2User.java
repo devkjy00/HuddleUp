@@ -1,14 +1,15 @@
 package jy.dev.huddleup.security.oauth2;
 
 import java.util.List;
+import java.util.Map;
+import jy.dev.huddleup.exception.DataNotFoundException;
 import jy.dev.huddleup.exception.HttpResponse;
 import jy.dev.huddleup.util.Social;
-
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class KakaoOAuth2User extends CustomOAuth2User {
+
     public static final String ATTRIBUTES = "kakao_account";
     public static final String ATTRIBUTES_PROFILE = "profile";
     public static final String ATTRIBUTES_NAME = "nickname";
@@ -22,16 +23,16 @@ public class KakaoOAuth2User extends CustomOAuth2User {
             super.attributes = (Map<String, Object>) providedAttributes.get(ATTRIBUTES);
 
             if (!providedAttributes.containsKey(ATTRIBUTES_KEY) ||
-                    !attributes.keySet().containsAll(List.of(ATTRIBUTES_PROFILE, ATTRIBUTES_EMAIL))) {
+                !attributes.keySet().containsAll(List.of(ATTRIBUTES_PROFILE, ATTRIBUTES_EMAIL))) {
                 throw new IllegalArgumentException();
             }
 
-            super.name = String.valueOf(((Map<?,?>) attributes.get(ATTRIBUTES_PROFILE)).get(ATTRIBUTES_NAME));
+            super.name = String.valueOf(((Map<?, ?>) attributes.get(ATTRIBUTES_PROFILE)).get(ATTRIBUTES_NAME));
             super.email = String.valueOf(attributes.get(ATTRIBUTES_EMAIL));
             super.socialProviderKey = String.valueOf(providedAttributes.get(ATTRIBUTES_KEY));
             super.social = Social.KAKAO;
         } catch (NullPointerException | IllegalArgumentException e) {
-            throw new IllegalArgumentException(HttpResponse.INVALID_KAKAO_OAUTH.getMessage());
+            throw new DataNotFoundException(HttpResponse.INVALID_KAKAO_OAUTH);
         }
     }
 }

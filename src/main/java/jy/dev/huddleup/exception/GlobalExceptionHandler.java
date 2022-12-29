@@ -12,22 +12,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex){
+    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
 
         String message = ex.getBindingResult()
-                .getAllErrors()
-                .stream()
-                .map(ObjectError::getDefaultMessage)
-                .findFirst()
-                .orElseGet(() -> "there's no error message");
+            .getAllErrors()
+            .stream()
+            .map(ObjectError::getDefaultMessage)
+            .findFirst()
+            .orElseGet(() -> "there's no error message");
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataNotFoundException.class)
-    public ResponseEntity<String> handleValidationExceptions(DataNotFoundException ex){
-        HttpResponse response = HttpResponse.valueOf(ex.getMessage());
-
+    public ResponseEntity<String> handleValidationExceptions(DataNotFoundException ex) {
+        HttpResponse response = ex.getHttpResponse();
         return response.getResponseEntity();
     }
 

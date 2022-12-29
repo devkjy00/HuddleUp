@@ -1,5 +1,6 @@
 package jy.dev.huddleup.model;
 
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -8,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import jy.dev.huddleup.dto.ProfileRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,8 +62,23 @@ public class Profile {
     @Column()
     private String residence;
 
+    @Column()
+    private String position;
+
     public Profile(Long id) {
         this.id = id;
     }
 
+    public Profile update(ProfileRequestDto dto) {
+        this.position = Optional.ofNullable(dto.getPosition()).orElseGet(this::getPosition);
+        this.phoneNumber = Optional.ofNullable(dto.getPhone_number()).orElseGet(this::getPhoneNumber);
+        this.portfolioUrl = Optional.ofNullable(dto.getPortfolio_url()).orElseGet(this::getPortfolioUrl);
+        this.availablePeriod = Optional.ofNullable(dto.getAvailable_period()).orElseGet(this::getAvailablePeriod);
+        this.availableTime = Optional.ofNullable(dto.getAvailable_time()).orElseGet(this::getAvailableTime);
+        this.faceToFace = Optional.ofNullable(dto.getFace_to_face()).orElseGet(this::getFaceToFace);
+        this.careerPeriod = Optional.ofNullable(dto.getCareer_period()).orElseGet(this::getCareerPeriod);
+        this.residence = Optional.ofNullable(dto.getResidence()).orElseGet(this::getResidence);
+
+        return this;
+    }
 }
