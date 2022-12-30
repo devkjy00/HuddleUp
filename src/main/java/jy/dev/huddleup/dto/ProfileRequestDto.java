@@ -2,6 +2,7 @@ package jy.dev.huddleup.dto;
 
 import jy.dev.huddleup.model.Profile;
 import jy.dev.huddleup.model.User;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class ProfileRequestDto {
 
