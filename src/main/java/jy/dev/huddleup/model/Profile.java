@@ -70,14 +70,14 @@ public class Profile {
     }
 
     public Profile update(ProfileRequestDto dto) {
-        this.position = Optional.ofNullable(dto.getPosition()).orElseGet(this::getPosition);
-        this.phoneNumber = Optional.ofNullable(dto.getPhone_number()).orElseGet(this::getPhoneNumber);
-        this.portfolioUrl = Optional.ofNullable(dto.getPortfolio_url()).orElseGet(this::getPortfolioUrl);
-        this.availablePeriod = Optional.ofNullable(dto.getAvailable_period()).orElseGet(this::getAvailablePeriod);
-        this.availableTime = Optional.ofNullable(dto.getAvailable_time()).orElseGet(this::getAvailableTime);
-        this.faceToFace = Optional.ofNullable(dto.getFace_to_face()).orElseGet(this::getFaceToFace);
-        this.careerPeriod = Optional.ofNullable(dto.getCareer_period()).orElseGet(this::getCareerPeriod);
-        this.residence = Optional.ofNullable(dto.getResidence()).orElseGet(this::getResidence);
+        this.position = Optional.ofNullable(dto.getPosition()).orElse(this.position);
+        this.phoneNumber = Optional.ofNullable(dto.getPhone_number()).orElse(this.phoneNumber);
+        this.portfolioUrl = Optional.ofNullable(dto.getPortfolio_url()).orElse(this.portfolioUrl);
+        this.availablePeriod = Optional.ofNullable(dto.getAvailable_period()).orElse(this.availablePeriod);
+        this.availableTime = Optional.ofNullable(dto.getAvailable_time()).orElse(this.availableTime);
+        this.faceToFace = Optional.ofNullable(dto.getFace_to_face()).orElse(this.faceToFace);
+        this.careerPeriod = Optional.ofNullable(dto.getCareer_period()).orElse(this.careerPeriod);
+        this.residence = Optional.ofNullable(dto.getResidence()).orElse(this.residence);
 
         return this;
     }

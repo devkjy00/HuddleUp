@@ -1,18 +1,20 @@
 package jy.dev.huddleup.dto.recruitpost;
 
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import jy.dev.huddleup.model.RecruitPost;
+import jy.dev.huddleup.model.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
-import java.util.Objects;
-
 @Getter
 @Setter
 public class RecruitPostRequestDto {
+
     @NotBlank(message = RecruitPostDtoMsg.EMPTY_TITLE)
     private String title;
 
@@ -21,17 +23,17 @@ public class RecruitPostRequestDto {
 
     @NotEmpty(message = RecruitPostDtoMsg.INVALID_DATE)
     @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
-            message = RecruitPostDtoMsg.INVALID_DATE)
+        message = RecruitPostDtoMsg.INVALID_DATE)
     private String projectStartTime;
 
     @NotEmpty(message = RecruitPostDtoMsg.INVALID_DATE)
     @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
-            message = RecruitPostDtoMsg.INVALID_DATE)
+        message = RecruitPostDtoMsg.INVALID_DATE)
     private String projectEndTime;
 
     @NotEmpty(message = RecruitPostDtoMsg.INVALID_DATE)
     @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
-            message = RecruitPostDtoMsg.INVALID_DATE)
+        message = RecruitPostDtoMsg.INVALID_DATE)
     private String recruitDueTime;
 
     private String tags;
@@ -58,10 +60,22 @@ public class RecruitPostRequestDto {
         return getLocalDate(recruitDueTime);
     }
 
-    private LocalDate getLocalDate(String date){
-        return Objects.nonNull(date)?
-                LocalDate.parse(date) : null;
+    private LocalDate getLocalDate(String date) {
+        return Objects.nonNull(date) ?
+            LocalDate.parse(date) : null;
     }
 
-
+    public RecruitPost toEntity(Long userId) {
+        return RecruitPost.builder()
+            .user(new User(userId))
+            .title(getTitle())
+            .body(getBody())
+            .projectStartTime(getProjectStartTime())
+            .projectEndTime(getProjectEndTime())
+            .recruitDueTime(getRecruitDueTime())
+            .requiredDesigners(getRequiredDesigners())
+            .requiredDevelopers(getRequiredDevelopers())
+            .requiredProjectManagers(getRequiredProjectManagers())
+            .build();
+    }
 }

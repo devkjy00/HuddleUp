@@ -1,14 +1,25 @@
 package jy.dev.huddleup.model;
 
-import lombok.*;
+import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -17,6 +28,7 @@ import java.util.ArrayList;
 @DynamicInsert
 @DynamicUpdate
 @AllArgsConstructor
+@Table(name = "recruit_post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecruitPost {
 
@@ -25,14 +37,10 @@ public class RecruitPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @BatchSize(size = 100)
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "USER_ID")
-//    private UserEntity user;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "PROFILE_ID")
-//    private ProfileEntity profile;
+    @BatchSize(size = 100)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true, cascade = CascadeType.ALL)
 //    private List<RecruitPostTagEntity> recruitPostTag = new ArrayList<>();
@@ -49,13 +57,13 @@ public class RecruitPost {
     private String body;
 
 
-    @ColumnDefault("0")
+    //    @ColumnDefault("0")
     private Integer requiredDevelopers;
 
-    @ColumnDefault("0")
+    //    @ColumnDefault("0")
     private Integer requiredDesigners;
 
-    @ColumnDefault("0")
+    //    @ColumnDefault("0")
     private Integer requiredProjectManagers;
 
     private LocalDate projectStartTime;
@@ -64,10 +72,10 @@ public class RecruitPost {
 
     private LocalDate recruitDueTime;
 
-    @ColumnDefault("")
+    //    @ColumnDefault("")
     private String imageUrl;
 
-    @ColumnDefault("true")
+    //    @ColumnDefault("true")
     private Boolean isOpened;
 
 

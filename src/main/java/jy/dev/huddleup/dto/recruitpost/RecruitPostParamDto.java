@@ -1,14 +1,13 @@
 package jy.dev.huddleup.dto.recruitpost;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import java.util.Objects;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -31,17 +30,16 @@ public class RecruitPostParamDto {
     private Integer sort = 0;
 
     @NotBlank(message = RecruitPostDtoMsg.EMPTY_PARAMETER)
-    private Integer tagId = 0;
+    private String tag = "all";
 
     @Builder
-    public RecruitPostParamDto(Integer limit, Integer offSet, Integer sort, Integer tagId){
-        this.limit = Objects.nonNull(limit)? limit : this.limit;
-        this.offSet = Objects.nonNull(offSet)?
-                (offSet) * this.limit : this.offSet;
-        this.sort = Objects.nonNull(sort)? sort : this.sort;
-        this.tagId = Objects.nonNull(tagId)? tagId : this.tagId;
+    public RecruitPostParamDto(Integer limit, Integer offSet, Integer sort, String tag) {
+        this.limit = Optional.ofNullable(limit).orElse(this.limit);
+        this.offSet = Optional.ofNullable(offSet).orElse(this.offSet);
+        this.sort = Optional.ofNullable(sort).orElse(this.sort);
+        this.tag = Optional.ofNullable(tag).orElse(this.tag);
     }
 
-    public static void validate(@Valid RecruitPostParamDto requestDto){
+    public static void validate(@Valid RecruitPostParamDto requestDto) {
     }
 }
