@@ -1,11 +1,15 @@
 package jy.dev.huddleup.dto.recruitpost;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import jy.dev.huddleup.model.RecruitPost;
+import jy.dev.huddleup.model.RecruitPostTag;
 import jy.dev.huddleup.model.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,17 +25,17 @@ public class RecruitPostRequestDto {
     @NotBlank(message = RecruitPostDtoMsg.EMPTY_BODY)
     private String body;
 
-    @NotEmpty(message = RecruitPostDtoMsg.INVALID_DATE)
+    @NotEmpty(message = RecruitPostDtoMsg.EMPTY_DATE)
     @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
         message = RecruitPostDtoMsg.INVALID_DATE)
     private String projectStartTime;
 
-    @NotEmpty(message = RecruitPostDtoMsg.INVALID_DATE)
+    @NotEmpty(message = RecruitPostDtoMsg.EMPTY_DATE)
     @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
         message = RecruitPostDtoMsg.INVALID_DATE)
     private String projectEndTime;
 
-    @NotEmpty(message = RecruitPostDtoMsg.INVALID_DATE)
+    @NotEmpty(message = RecruitPostDtoMsg.EMPTY_DATE)
     @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
         message = RecruitPostDtoMsg.INVALID_DATE)
     private String recruitDueTime;
@@ -68,6 +72,9 @@ public class RecruitPostRequestDto {
     public RecruitPost toEntity(Long userId) {
         return RecruitPost.builder()
             .user(new User(userId))
+            .recruitPostTag(getTagIds().stream()
+                .map(RecruitPostTag::new)
+                .collect(Collectors.toList()))
             .title(getTitle())
             .body(getBody())
             .projectStartTime(getProjectStartTime())
@@ -77,5 +84,11 @@ public class RecruitPostRequestDto {
             .requiredDevelopers(getRequiredDevelopers())
             .requiredProjectManagers(getRequiredProjectManagers())
             .build();
+    }
+
+    public List<Long> getTagIds() {
+        return Arrays.stream(tags.split(","))
+            .map(Long::parseLong)
+            .collect(Collectors.toList());
     }
 }

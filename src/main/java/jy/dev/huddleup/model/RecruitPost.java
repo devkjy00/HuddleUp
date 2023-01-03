@@ -1,8 +1,12 @@
 package jy.dev.huddleup.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,6 +25,7 @@ import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
@@ -29,8 +35,9 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 @AllArgsConstructor
 @Table(name = "recruit_post")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecruitPost {
+public class RecruitPost extends TimeStamp {
 
     @Id
     @Column(nullable = false)
@@ -42,8 +49,8 @@ public class RecruitPost {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true, cascade = CascadeType.ALL)
-//    private List<RecruitPostTagEntity> recruitPostTag = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<RecruitPostTag> recruitPostTag = new ArrayList<>();
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true)
 //    private List<ApplicantEntity> applicants = new ArrayList<>();
@@ -55,7 +62,6 @@ public class RecruitPost {
     @Lob
     @Column(nullable = false)
     private String body;
-
 
     //    @ColumnDefault("0")
     private Integer requiredDevelopers;

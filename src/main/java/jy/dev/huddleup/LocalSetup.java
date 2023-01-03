@@ -1,6 +1,8 @@
 package jy.dev.huddleup;
 
+import jy.dev.huddleup.model.Tag;
 import jy.dev.huddleup.model.User;
+import jy.dev.huddleup.repository.TagRepository;
 import jy.dev.huddleup.repository.UserRepository;
 import jy.dev.huddleup.security.jwt.JwtTokenUtils;
 import jy.dev.huddleup.security.oauth2.CustomOAuth2User;
@@ -13,10 +15,13 @@ import org.springframework.stereotype.Component;
 public class LocalSetup {
 
     private final UserRepository userRepository;
+    private final TagRepository tagRepository;
 
     @Autowired
-    public LocalSetup(UserRepository userRepository) {
+    public LocalSetup(UserRepository userRepository,
+        TagRepository tagRepository) {
         this.userRepository = userRepository;
+        this.tagRepository = tagRepository;
     }
 
 
@@ -31,6 +36,17 @@ public class LocalSetup {
 
         User user = userRepository.save(userB);
         printJwt(user);
+
+        Tag tagB1 = Tag.builder()
+            .Name("name1")
+            .build();
+
+        Tag tagB2 = Tag.builder()
+            .Name("name2")
+            .build();
+
+        tagRepository.save(tagB1);
+        tagRepository.save(tagB2);
     }
 
     public void printJwt(User user) {

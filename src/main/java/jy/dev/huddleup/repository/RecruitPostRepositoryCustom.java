@@ -1,12 +1,17 @@
 package jy.dev.huddleup.repository;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Optional;
-import jy.dev.huddleup.exception.DataNotFoundException;
-import jy.dev.huddleup.exception.HttpResponse;
+import java.util.List;
+import java.util.Objects;
+import jy.dev.huddleup.dto.recruitpost.RecruitPostParamDto;
 import jy.dev.huddleup.model.QRecruitPost;
+import jy.dev.huddleup.model.QRecruitPostTag;
+import jy.dev.huddleup.model.QTag;
 import jy.dev.huddleup.model.QUser;
-import jy.dev.huddleup.model.RecruitPost;
+import jy.dev.huddleup.util.SortObjProvider;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -14,78 +19,41 @@ public class RecruitPostRepositoryCustom {
 
     private JPAQueryFactory queryFactory;
 
-    private QRecruitPost post = QRecruitPost.recruitPost;
-    private QUser user = QUser.user;
+    private QRecruitPost qPost = QRecruitPost.recruitPost;
+    private QUser qUser = QUser.user;
+    private QRecruitPostTag qPostTag = QRecruitPostTag.recruitPostTag;
+    private QTag qTag = QTag.tag;
 
     public RecruitPostRepositoryCustom(
         JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
     }
 
-    public RecruitPost findByIdAndUserId(Long postId, Long userId) {
-        return Optional.ofNullable(queryFactory.select(post)
-                .from(post)
-                .where(post.id.eq(postId),
-                    post.user.id.eq(userId))
-                .fetchOne())
-            .orElseThrow(() -> new DataNotFoundException(HttpResponse.POST_NOT_FOUND));
+    public Page<Long> findPostIdsByTagId(RecruitPostParamDto dto) {
+
+        List<Long> content = setTagQuery(dto).offset(dto.getOffSet())
+            .limit(dto.getLimit())
+            .orderBy(SortObjProvider.valueOf(dto.getSort()).getOrderSpecifier())
+            .fetch();
+
+        int totalSize = setTagQuery(dto).fetch().size();
+
+        return new PageImpl<>(content, dto.getPageable(), totalSize);
     }
 
-//    public List<SimpleRecruitPostResponseDto> findAllByTagId(RecruitPostParamDto dto) {
-//
-//        Map<Long, SimpleRecruitPostResponseDto> dtoMap = new HashMap<>();
-//
-//        List<Long> postIds = findPostIdsByTags(dto.getTag());
-////        List<RecruitPostTagDto> postTagDtos =
-////            recruitPostTagRepositoryCustom.findByPostIds(postIds);
-//
-//        List<SimpleRecruitPostResponseDto> postDtos = queryFactory.select(
-//                Projections.fields(SimpleRecruitPostResponseDto.class,
-//                    post.id.as("postId"),
-//                    user.username,
-////                        position.positionName.as("userPosition"),
-////                    profile.imageUrl.as("authorImage"),
-//                    post.title,
-//                    post.projectStartTime,
-//                    post.projectEndTime,
-//                    post.recruitDueTime
-//                ))
-//            .from(post)
-//            .innerJoin(post.user, user)
-////            .innerJoin(profile)
-////            .on(profile.user.id.eq(user.id))
-//            .where(post.id.in(postIds))
-//            .orderBy(SortValue.getOrderSpecifier(dto.getSort()))
-//            .fetch();
-//
-//        postDtos.forEach((post) -> dtoMap.put(post.getPostId(), post));
-//
-//        postTagDtos.forEach((postTag) -> {
-//            SimpleRecruitPostResponseDto postDto = dtoMap.get(postTag.getPostId());
-//            postDto.addTag(postTag.getTagId());
-//            dtoMap.put(postTag.getPostId(), postDto);
-//        });
-//
-//        return new ArrayList<>(dtoMap.values());
-//
-//    }
-//
-//
-//    private List<Long> findPostIdsByTags(String tag) {
-//        JPAQuery<Long> query = queryFactory
-//            .select(post.id)
-//            .from(post);
-//
-//        if (TagValue.notAll(dto.getTagId())) {
-//            query.join(post.recruitPostTag, postTag)
-//                .on(postTag.tag.id.eq(dto.getTagId()));
-//        }
-//
-//        return query.offset(dto.getOffSet())
-//            .limit(dto.getLimit())
-//            .orderBy(SortValue.getOrderSpecifier(dto.getSort()))
-//            .fetch();
-//    }
+    private JPAQuery<Long> setTagQuery(RecruitPostParamDto dto) {
+        final Long ALL = 0L;
 
+        JPAQuery<Long> query = queryFactory
+            .select(qPost.id)
+            .from(qPost);
+
+        if (!Objects.equals(dto.getTagId(), ALL)) {
+            query.innerJoin(qPost.recruitPostTag, qPostTag)
+                .on(qPostTag.tag.id.eq(dto.getTagId()));
+        }
+
+        return query;
+    }
 
 }

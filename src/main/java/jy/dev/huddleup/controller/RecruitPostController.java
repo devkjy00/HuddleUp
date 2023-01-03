@@ -9,7 +9,6 @@ import jy.dev.huddleup.security.UserDetailsImpl;
 import jy.dev.huddleup.service.RecruitPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -59,10 +58,10 @@ public class RecruitPostController {
 
     @GetMapping("/main")
     public Map<String, Object> getPosts(
-        @Nullable @RequestParam("limit") Integer limit,
-        @Nullable @RequestParam("page") Integer page,
-        @Nullable @RequestParam("sort") Integer sort,
-        @Nullable @RequestParam("tag") Integer tagId) {
+        @RequestParam(value = "limit", required = false, defaultValue = "6") Integer limit,
+        @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+        @RequestParam(value = "sort", required = false, defaultValue = "0") Integer sort,
+        @RequestParam(value = "tags", required = false, defaultValue = "0") Long tagId) {
 
         RecruitPostParamDto requestDto = RecruitPostParamDto.builder()
             .limit(limit)
