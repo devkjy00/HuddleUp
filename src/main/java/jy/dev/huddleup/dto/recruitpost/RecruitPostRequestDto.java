@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import jy.dev.huddleup.model.RecruitPost;
-import jy.dev.huddleup.model.RecruitPostTag;
 import jy.dev.huddleup.model.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -69,14 +68,12 @@ public class RecruitPostRequestDto {
             LocalDate.parse(date) : null;
     }
 
-    public RecruitPost toEntity(Long userId) {
+    public RecruitPost toEntity(Long userId, String imgUrl) {
         return RecruitPost.builder()
             .user(new User(userId))
-            .recruitPostTag(getTagIds().stream()
-                .map(RecruitPostTag::new)
-                .collect(Collectors.toList()))
             .title(getTitle())
             .body(getBody())
+            .imageUrl(imgUrl)
             .projectStartTime(getProjectStartTime())
             .projectEndTime(getProjectEndTime())
             .recruitDueTime(getRecruitDueTime())

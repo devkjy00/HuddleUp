@@ -50,7 +50,7 @@ public class SimpleRecruitPostResponseDto {
         this.username = user.getUsername();
         this.userPosition = profile.getPosition();
         this.authorImage = profile.getImageUrl();
-        this.tags = recruitPost.getRecruitPostTag().stream()
+        this.tags = recruitPost.getRecruitPostTags().stream()
             .map(RecruitPostTag::getTag)
             .map(TagResponseDto::new)
             .collect(Collectors.toList());

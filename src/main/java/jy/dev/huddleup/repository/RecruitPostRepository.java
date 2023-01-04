@@ -12,7 +12,7 @@ public interface RecruitPostRepository extends JpaRepository<RecruitPost, Long> 
 
     @Query("select distinct r from RecruitPost r "
         + "join r.user u join u.profile p "
-        + "left join r.recruitPostTag pt "
+        + "left join r.recruitPostTags pt "
         + "join pt.tag where r.id in ?1")
     List<RecruitPost> findAllByIdIn(List<Long> ids, Sort sort);
 }

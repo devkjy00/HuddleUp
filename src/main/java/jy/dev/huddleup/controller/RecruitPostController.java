@@ -60,7 +60,7 @@ public class RecruitPostController {
     public Map<String, Object> getPosts(
         @RequestParam(value = "limit", required = false, defaultValue = "6") Integer limit,
         @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-        @RequestParam(value = "sort", required = false, defaultValue = "0") Integer sort,
+        @RequestParam(value = "sort", required = false, defaultValue = "all") String sort,
         @RequestParam(value = "tags", required = false, defaultValue = "0") Long tagId) {
 
         RecruitPostParamDto requestDto = RecruitPostParamDto.builder()

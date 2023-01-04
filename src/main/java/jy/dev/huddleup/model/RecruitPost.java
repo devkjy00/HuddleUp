@@ -49,8 +49,9 @@ public class RecruitPost extends TimeStamp {
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<RecruitPostTag> recruitPostTag = new ArrayList<>();
+    private List<RecruitPostTag> recruitPostTags = new ArrayList<>();
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true)
 //    private List<ApplicantEntity> applicants = new ArrayList<>();
@@ -84,5 +85,14 @@ public class RecruitPost extends TimeStamp {
     //    @ColumnDefault("true")
     private Boolean isOpened;
 
+    public RecruitPost(Long id) {
+        this.id = id;
+    }
 
+    public List<RecruitPostTag> addTag(Long tagId) {
+        RecruitPostTag recruitPostTag = new RecruitPostTag(id, tagId);
+        recruitPostTags.add(recruitPostTag);
+
+        return recruitPostTags;
+    }
 }

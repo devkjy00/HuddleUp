@@ -15,24 +15,34 @@ import jy.dev.huddleup.util.SortObjProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RecruitPostService {
 
     private final RecruitPostRepository recruitPostRepository;
     private final RecruitPostRepositoryCustom recruitPostRepositoryCustom;
+    private final AwsS3Service awsS3Service;
 
     @Autowired
     public RecruitPostService(RecruitPostRepository recruitPostRepository,
-        RecruitPostRepositoryCustom recruitPostRepositoryCustom) {
+        RecruitPostRepositoryCustom recruitPostRepositoryCustom,
+        AwsS3Service awsS3Service) {
         this.recruitPostRepository = recruitPostRepository;
         this.recruitPostRepositoryCustom = recruitPostRepositoryCustom;
+        this.awsS3Service = awsS3Service;
     }
 
+    @Transactional
     public RecruitPost createPost(RecruitPostRequestDto requestDto, UserDetailsImpl userDetails) {
-        return recruitPostRepository.save(requestDto.toEntity(userDetails.getUserId()));
+        String imgUrl = awsS3Service.uploadFile(requestDto.getImg());
+        RecruitPost recruitPost = recruitPostRepository.save(requestDto.toEntity(userDetails.getUserId(), imgUrl));
+        requestDto.getTagIds().forEach(recruitPost::addTag);
+
+        return recruitPost;
     }
 
+    @Transactional(readOnly = true)
     public Map<String, Object> getPosts(RecruitPostParamDto requestDto) {
         Map<String, Object> result = new HashMap<>();
 

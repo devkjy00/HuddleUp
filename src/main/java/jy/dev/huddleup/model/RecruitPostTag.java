@@ -41,7 +41,8 @@ public class RecruitPostTag {
         this.recruitPost = post;
     }
 
-    public RecruitPostTag(Long tagId) {
+    public RecruitPostTag(Long recruitPostId, Long tagId) {
+        this.recruitPost = new RecruitPost(recruitPostId);
         this.tag = new Tag(tagId);
     }
 
