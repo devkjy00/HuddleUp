@@ -5,6 +5,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -32,6 +34,7 @@ public class Profile {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -65,8 +68,8 @@ public class Profile {
     @Column()
     private String position;
 
-    public Profile(Long id) {
-        this.id = id;
+    public Profile(User user) {
+        this.user = user;
     }
 
     public Profile update(ProfileRequestDto dto) {

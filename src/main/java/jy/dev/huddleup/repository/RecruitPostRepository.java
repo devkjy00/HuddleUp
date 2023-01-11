@@ -4,15 +4,10 @@ import java.util.List;
 import jy.dev.huddleup.model.RecruitPost;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RecruitPostRepository extends JpaRepository<RecruitPost, Long> {
 
-    @Query("select distinct r from RecruitPost r "
-        + "join r.user u join u.profile p "
-        + "left join r.recruitPostTags pt "
-        + "join pt.tag where r.id in ?1")
     List<RecruitPost> findAllByIdIn(List<Long> ids, Sort sort);
 }

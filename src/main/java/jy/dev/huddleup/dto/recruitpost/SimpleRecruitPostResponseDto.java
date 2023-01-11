@@ -62,8 +62,7 @@ public class SimpleRecruitPostResponseDto {
         this.requiredDesigners = recruitPost.getRequiredDesigners();
         this.requiredProjectManagers = recruitPost.getRequiredProjectManagers();
         this.projectStartTime = recruitPost.getProjectStartTime();
+        this.projectEndTime = recruitPost.getProjectEndTime();
         this.recruitDueTime = recruitPost.getRecruitDueTime();
     }
-
-
 }

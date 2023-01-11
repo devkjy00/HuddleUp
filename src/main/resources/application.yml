@@ -1,19 +1,25 @@
 spring:
-  properties:
-    hibernate:
-      default_batch_fetch_size: 100
-
   profiles:
     include:
       - oauth
-      - h2
+      #      - h2
       - data
 
   jpa:
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
+        database: mysql
         show_sql: true
         format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    generate-ddl: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 
 logging:
   file:

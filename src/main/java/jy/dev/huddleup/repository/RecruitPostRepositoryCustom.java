@@ -49,7 +49,7 @@ public class RecruitPostRepositoryCustom {
             .from(qPost);
 
         if (!Objects.equals(dto.getTagId(), ALL)) {
-            query.innerJoin(qPost.recruitPostTag, qPostTag)
+            query.innerJoin(qPost.recruitPostTags, qPostTag)
                 .on(qPostTag.tag.id.eq(dto.getTagId()));
         }
 

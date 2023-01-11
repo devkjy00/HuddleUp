@@ -50,6 +50,7 @@ public class RecruitPost extends TimeStamp {
     private User user;
 
     @Builder.Default
+    @BatchSize(size = 100)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<RecruitPostTag> recruitPostTags = new ArrayList<>();
 
