@@ -1,6 +1,7 @@
 package jy.dev.huddleup;
 
 import jy.dev.huddleup.model.Tag;
+import jy.dev.huddleup.model.User;
 import jy.dev.huddleup.repository.TagRepository;
 import jy.dev.huddleup.security.jwt.JwtTokenUtils;
 import jy.dev.huddleup.security.oauth2.CustomOAuth2User;
@@ -30,8 +31,14 @@ public class LocalSetup {
             .name("username")
             .build();
 
-        userService.saveOrUpdate(oAuth2User);
-        printJwt(oAuth2User);
+        User user = userService.saveOrUpdate(oAuth2User);
+        printJwt(CustomOAuth2User.builder()
+            .id(user.getId())
+            .name(user.getUsername())
+            .email(user.getEmail())
+            .social(user.getSocial())
+            .socialProviderKey(user.getSocialProviderKey())
+            .build());
 
         Tag tagB1 = Tag.builder()
             .Name("name1")
@@ -47,6 +54,5 @@ public class LocalSetup {
 
     public void printJwt(CustomOAuth2User oAuth2User) {
         String jwt = JwtTokenUtils.generateJwtToken(oAuth2User);
-//        System.out.println(jwt);
     }
 }

@@ -39,23 +39,6 @@ public class RecruitPostController {
         return HttpResponse.OK.getResponseEntity();
     }
 
-//    public ResponseEntity<Map<String, Object>> getPosts(
-//            @RequestParam("page") Integer page, @RequestParam("size") Integer size, @RequestParam("sort") String sort, @RequestParam(required = false, value = "tags") Long tagId) {
-//
-//        Direction sortDirection = Direction.ASC;
-//
-//        if (sort.equals("new")) {
-//            sortDirection = Direction.DESC;
-//            sort = "createdAt";
-//        }
-//        if (sort.equals("due")) sort = "recruitDueTime";
-//
-//        PageRequest pageRequest = PageRequest.of(page, size, sortDirection, sort);
-//        Map<String, Object> body = recruitPostService.getPosts(pageRequest, tagId);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(body);
-//    }
-
     @GetMapping("/main")
     public Map<String, Object> getPosts(
         @RequestParam(value = "limit", required = false, defaultValue = "6") Integer limit,
