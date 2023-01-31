@@ -26,8 +26,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2UserService<OAuth2UserRequest, OAuth2User> defaultOAuth2UserService = new DefaultOAuth2UserService();
 
         // 플랫폼 이름
-        String OAuthProvider = userRequest.getClientRegistration().getRegistrationId();
-        Social social = Social.valueOf(OAuthProvider.toUpperCase());
+        String oAuthProvider = userRequest.getClientRegistration().getRegistrationId();
+        Social social = Social.valueOf(oAuthProvider.toUpperCase());
 
         // access token으로 유저 데이터 가져오기
         OAuth2User defaultOAuth2User = defaultOAuth2UserService.loadUser(userRequest);

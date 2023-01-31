@@ -7,11 +7,20 @@ import java.util.Map;
 import jy.dev.huddleup.model.User;
 import jy.dev.huddleup.util.Social;
 import jy.dev.huddleup.util.UserRole;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CustomOAuth2User implements OAuth2User {
 
     protected Long id;

@@ -1,6 +1,13 @@
 package jy.dev.huddleup.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.Objects;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import jy.dev.huddleup.exception.HttpResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -10,14 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Objects;
-
 @WebServlet
 public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -25,21 +24,22 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
     private final ObjectMapper mapper;
 
     public JwtAuthFilter(
-            RequestMatcher requestMatcher,
-            HeaderTokenExtractor extractor){
+        RequestMatcher requestMatcher,
+        HeaderTokenExtractor extractor) {
         super(requestMatcher);
         this.extractor = extractor;
         this.mapper = new ObjectMapper();
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+        throws AuthenticationException, IOException, ServletException {
         String tokenPayload = request.getHeader("Authorization");
-        if (Objects.isNull(tokenPayload)){
+        if (Objects.isNull(tokenPayload)) {
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             ResponseEntity<String> responseEntity =
-                    HttpResponse.TOKEN_NOT_FOUND.getResponseEntity();
+                HttpResponse.TOKEN_NOT_FOUND.getResponseEntity();
 
             String message = mapper.writeValueAsString(responseEntity);
 
@@ -49,20 +49,20 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
         }
 
         // 헤더에서 JWT토큰을 가져와서 UsernamePasswordAuthenticationToken 상속객체에 페이로드와 길이를 저장
-        JwtPreProcessingToken jwtToken = new JwtPreProcessingToken(
-                extractor.extract(tokenPayload, request));
+        JwtPreProcessingToken jwtToken = new JwtPreProcessingToken(tokenPayload);
+//        extractor.extract(tokenPayload, request));
 
         return super
-                .getAuthenticationManager()
-                .authenticate(jwtToken);
+            .getAuthenticationManager()
+            .authenticate(jwtToken);
     }
 
     @Override
     protected void successfulAuthentication(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain,
-            Authentication authResult
+        HttpServletRequest request,
+        HttpServletResponse response,
+        FilterChain chain,
+        Authentication authResult
     ) throws IOException, ServletException {
         /*
          *  SecurityContext 사용자 Token 저장소를 생성합니다.
@@ -75,16 +75,16 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
 
         // FilterChain chain 해당 필터가 실행 후 다른 필터도 실행할 수 있도록 연결실켜주는 메서드
         chain.doFilter(
-                request,
-                response
+            request,
+            response
         );
     }
 
     @Override
     protected void unsuccessfulAuthentication(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AuthenticationException failed
+        HttpServletRequest request,
+        HttpServletResponse response,
+        AuthenticationException failed
     ) throws IOException, ServletException {
         /*
          *	로그인을 한 상태에서 Token값을 주고받는 상황에서 잘못된 Token값이라면
@@ -94,9 +94,9 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
         SecurityContextHolder.clearContext();
 
         super.unsuccessfulAuthentication(
-                request,
-                response,
-                failed
+            request,
+            response,
+            failed
         );
     }
 }
