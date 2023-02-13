@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import jy.dev.huddleup.dto.recruitpost.RecruitPostParamDto;
 import jy.dev.huddleup.dto.recruitpost.RecruitPostRequestDto;
 import jy.dev.huddleup.dto.recruitpost.SimpleRecruitPostResponseDto;
+import jy.dev.huddleup.exception.DataNotFoundException;
+import jy.dev.huddleup.exception.HttpResponse;
 import jy.dev.huddleup.model.RecruitPost;
 import jy.dev.huddleup.repository.RecruitPostRepository;
 import jy.dev.huddleup.repository.RecruitPostRepositoryCustom;
@@ -58,4 +60,12 @@ public class RecruitPostService {
 
         return result;
     }
+
+    @Transactional(readOnly = true)
+    public RecruitPost getPost(Long postId) {
+        return recruitPostRepository.findById(postId)
+            .orElseThrow(() -> new DataNotFoundException(HttpResponse.POST_NOT_FOUND));
+    }
+
+
 }

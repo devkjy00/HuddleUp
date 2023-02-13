@@ -4,7 +4,9 @@ import java.util.Map;
 import javax.validation.Valid;
 import jy.dev.huddleup.dto.recruitpost.RecruitPostParamDto;
 import jy.dev.huddleup.dto.recruitpost.RecruitPostRequestDto;
+import jy.dev.huddleup.dto.recruitpost.SimpleRecruitPostResponseDto;
 import jy.dev.huddleup.exception.HttpResponse;
+import jy.dev.huddleup.model.RecruitPost;
 import jy.dev.huddleup.security.UserDetailsImpl;
 import jy.dev.huddleup.service.RecruitPostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,5 +60,13 @@ public class RecruitPostController {
         return recruitPostService.getPosts(requestDto);
 
     }
+
+    @GetMapping("/recruitPost/{postId}")
+    public SimpleRecruitPostResponseDto getPost(
+        @PathVariable Long postId) {
+        RecruitPost recruitPost = recruitPostService.getPost(postId);
+        return new SimpleRecruitPostResponseDto(recruitPost);
+    }
+
 
 }

@@ -55,4 +55,15 @@ public class LocalSetup {
     public void printJwt(CustomOAuth2User oAuth2User) {
         String jwt = JwtTokenUtils.generateJwtToken(oAuth2User);
     }
+
+    public void printJwt() {
+        User user = userService.getUserInfo(1L);
+        printJwt(CustomOAuth2User.builder()
+            .id(user.getId())
+            .name(user.getUsername())
+            .email(user.getEmail())
+            .social(user.getSocial())
+            .socialProviderKey(user.getSocialProviderKey())
+            .build());
+    }
 }
