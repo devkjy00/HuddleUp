@@ -32,6 +32,7 @@ public class ProfileRequestDto {
             .residence(residence)
             .availablePeriod(available_period)
             .availableTime(available_time)
+            .jobGroup(fields)
             .position(position)
             .faceToFace(face_to_face)
             .careerPeriod(career_period)

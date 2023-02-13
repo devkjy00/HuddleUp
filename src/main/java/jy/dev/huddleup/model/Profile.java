@@ -68,6 +68,10 @@ public class Profile {
     @Column()
     private String position;
 
+    private String jobGroup;
+
+    private String skills;
+
     public Profile(User user) {
         this.user = user;
     }
@@ -76,6 +80,8 @@ public class Profile {
         this.position = Optional.ofNullable(dto.getPosition()).orElse(this.position);
         this.phoneNumber = Optional.ofNullable(dto.getPhone_number()).orElse(this.phoneNumber);
         this.portfolioUrl = Optional.ofNullable(dto.getPortfolio_url()).orElse(this.portfolioUrl);
+        this.jobGroup = Optional.ofNullable(dto.getFields()).orElse(this.jobGroup);
+        this.skills = Optional.ofNullable(dto.getSkills()).orElse(this.skills);
         this.availablePeriod = Optional.ofNullable(dto.getAvailable_period()).orElse(this.availablePeriod);
         this.availableTime = Optional.ofNullable(dto.getAvailable_time()).orElse(this.availableTime);
         this.faceToFace = Optional.ofNullable(dto.getFace_to_face()).orElse(this.faceToFace);

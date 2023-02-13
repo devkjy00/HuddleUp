@@ -1,5 +1,7 @@
 package jy.dev.huddleup.service;
 
+import jy.dev.huddleup.exception.DataNotFoundException;
+import jy.dev.huddleup.exception.HttpResponse;
 import jy.dev.huddleup.model.Profile;
 import jy.dev.huddleup.model.User;
 import jy.dev.huddleup.repository.UserRepository;
@@ -30,5 +32,12 @@ public class UserService {
         user.setProfile(new Profile(user));
 
         return user;
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserInfo(Long userId) {
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new DataNotFoundException(HttpResponse.USER_NOT_FOUND));
+
     }
 }

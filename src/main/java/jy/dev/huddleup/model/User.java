@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.ToString;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.DynamicUpdate;
@@ -41,7 +41,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(nullable = false)
     private String email;
 
@@ -51,19 +50,17 @@ public class User {
     @Column(nullable = false)
     private String socialProviderKey;
 
-    @NonNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Social social;
 
-    @NonNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
 
     @BatchSize(size = 100)
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Profile profile;
 
     public User update(CustomOAuth2User oAuth2User) {

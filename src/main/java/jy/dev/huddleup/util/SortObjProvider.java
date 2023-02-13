@@ -26,11 +26,4 @@ public enum SortObjProvider {
     public Sort getSort() {
         return Sort.by(direction, sortBy);
     }
-
-    public static OrderSpecifier<?> getOrderSpecifier(int order) {
-        SortObjProvider sort = SortObjProvider.values()[order];
-        return sort.getOrderSpecifier();
-    }
-
 }
-

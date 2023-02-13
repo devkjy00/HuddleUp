@@ -19,8 +19,6 @@ public class SimpleRecruitPostResponseDto {
 
     private String username;
 
-//    private String introduce;
-
     private String userPosition;
 
     private String authorImage;

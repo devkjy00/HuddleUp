@@ -2,6 +2,7 @@ drop table if exists _user;
 drop table if exists recruit_post;
 drop table if exists recruit_post_tag;
 drop table if exists tag;
+drop table if exists job_group;
 
 create table _user (
    id bigint not null auto_increment,
@@ -25,6 +26,8 @@ create table profile (
     portfolio_url varchar(255) DEFAULT '',
     position varchar(255) DEFAULT '',
     residence varchar(255) DEFAULT '',
+    job_group varchar(255) DEFAULT  '',
+    skills varchar(255) DEFAULT  '',
     user_id bigint,
     primary key (id)
 );
@@ -60,6 +63,7 @@ create table tag (
     primary key (id)
 );
 
+
 alter table tag
     add constraint UK_1wdpsed5kna2y38hnbgrnhi5b unique (name);
 
@@ -82,3 +86,4 @@ alter table recruit_post_tag
     add constraint FK4jpvk82mmqchv29k49vriixxp
     foreign key (tag_id)
     references tag (id);
+
