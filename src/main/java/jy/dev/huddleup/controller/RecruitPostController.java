@@ -12,6 +12,7 @@ import jy.dev.huddleup.service.RecruitPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,6 +67,14 @@ public class RecruitPostController {
         @PathVariable Long postId) {
         RecruitPost recruitPost = recruitPostService.getPost(postId);
         return new SimpleRecruitPostResponseDto(recruitPost);
+    }
+
+    @DeleteMapping("/recruitPost/{postId}")
+    public ResponseEntity<String> deletePost(
+        @PathVariable Long postId) {
+        recruitPostService.deletePost(postId);
+
+        return HttpResponse.OK.getResponseEntity();
     }
 
 

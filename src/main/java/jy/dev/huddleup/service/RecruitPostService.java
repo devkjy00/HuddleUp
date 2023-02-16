@@ -67,5 +67,12 @@ public class RecruitPostService {
             .orElseThrow(() -> new DataNotFoundException(HttpResponse.POST_NOT_FOUND));
     }
 
+    @Transactional
+    public void deletePost(Long postId) {
+        RecruitPost recruitPost = recruitPostRepository.findById(postId)
+            .orElseThrow(() -> new DataNotFoundException(HttpResponse.POST_NOT_FOUND));
+
+        recruitPostRepository.delete(recruitPost);
+    }
 
 }
