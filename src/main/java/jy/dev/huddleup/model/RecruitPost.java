@@ -3,6 +3,7 @@ package jy.dev.huddleup.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import jy.dev.huddleup.dto.recruitpost.RecruitPostRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +26,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
@@ -32,7 +33,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Builder
 @DynamicInsert
-@DynamicUpdate
 @AllArgsConstructor
 @Table(name = "recruit_post")
 @EntityListeners(AuditingEntityListener.class)
@@ -65,13 +65,10 @@ public class RecruitPost extends TimeStamp {
     @Column(nullable = false)
     private String body;
 
-    //    @ColumnDefault("0")
     private Integer requiredDevelopers;
 
-    //    @ColumnDefault("0")
     private Integer requiredDesigners;
 
-    //    @ColumnDefault("0")
     private Integer requiredProjectManagers;
 
     private LocalDate projectStartTime;
@@ -95,5 +92,19 @@ public class RecruitPost extends TimeStamp {
         recruitPostTags.add(recruitPostTag);
 
         return recruitPostTags;
+    }
+
+    public void update(RecruitPostRequestDto dto) {
+
+        this.title = Optional.ofNullable(dto.getTitle()).orElse(this.title);
+        this.body = Optional.ofNullable(dto.getBody()).orElse(this.body);
+        this.recruitDueTime = Optional.ofNullable(dto.getRecruitDueTime()).orElse(this.recruitDueTime);
+//        this.imageUrl = Optional.ofNullable(dto.()).orElse(this.imageUrl);
+        this.title = Optional.ofNullable(dto.getTitle()).orElse(this.title);
+        this.title = Optional.ofNullable(dto.getTitle()).orElse(this.title);
+        this.title = Optional.ofNullable(dto.getTitle()).orElse(this.title);
+        this.title = Optional.ofNullable(dto.getTitle()).orElse(this.title);
+        this.title = Optional.ofNullable(dto.getTitle()).orElse(this.title);
+
     }
 }

@@ -10,6 +10,7 @@ import jy.dev.huddleup.dto.recruitpost.SimpleRecruitPostResponseDto;
 import jy.dev.huddleup.exception.DataNotFoundException;
 import jy.dev.huddleup.exception.HttpResponse;
 import jy.dev.huddleup.model.RecruitPost;
+import jy.dev.huddleup.model.User;
 import jy.dev.huddleup.repository.RecruitPostRepository;
 import jy.dev.huddleup.repository.RecruitPostRepositoryCustom;
 import jy.dev.huddleup.security.UserDetailsImpl;
@@ -75,4 +76,10 @@ public class RecruitPostService {
         recruitPostRepository.delete(recruitPost);
     }
 
+    @Transactional
+    public void updatePost(Long postId, Long userId, RecruitPostRequestDto dto) {
+        RecruitPost post = recruitPostRepository.findByIdAndUser(postId, new User(userId))
+            .orElseThrow(() -> new DataNotFoundException(HttpResponse.POST_NOT_FOUND));
+        post.update(dto);
+    }
 }
